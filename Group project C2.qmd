@@ -1,0 +1,80 @@
+---
+title: "Group project C2"
+format: pdf
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(cowplot)
+library(ggplot2)
+library(broom)
+```
+
+```{r}
+listings <- read.csv("listings.csv", header = TRUE)
+head(listings)
+     
+```
+
+We eliminate the variables we do not want to add to the model.
+
+```{r}
+listings <- listings %>%
+    select(-id, -name, -host_id, -host_name, -host_response_time, -license,-latitude,-longitude)
+head(listings)
+```
+
+We check for missing values.
+
+```{r}
+colSums(is.na(listings))
+```
+
+```{r}
+listings <- na.omit(listings)
+dim(listings)
+```
+
+```{r}
+str(listings)
+```
+
+We check for the values for host_is_superhost and instant_bookable
+
+```{r}
+unique(listings$host_is_superhost)
+unique(listings$instant_bookable)
+dim(listings)
+```
+
+```{r}
+listings <-  subset(listings, host_is_superhost != "") 
+dim(listings)
+```
+
+```{r}
+unique(listings$host_is_superhost)
+```
